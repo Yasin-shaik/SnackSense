@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
 export default function Register() {
   const[name,setName]=useState('');
   const[password,setPassword]=useState('');
   const[email,setEmail]=useState('');
   const[repeat,setRepeat]=useState('');
-  const handleSubmit=()=>{
-    console.log(name);
-    console.log(email);
-    console.log(password);
-    console.log(repeat);
+  const register=()=>{
+      if(!name || !email || !password || !repeat)
+        toast.warning("Fill all the required fields");
+      if(password!==repeat)
+        toast.warning("Password & confirm password not matched");
   }
   return (
     <form method="post" className="form">
+        <ToastContainer position="top-center" theme="light" />
         <section class="vh-100" style={{backgroundColor: "#eee"}}>
           <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -51,7 +53,7 @@ export default function Register() {
                             </div>
                           </div>
                           <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                            <button onClick={handleSubmit}  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Register</button>
+                            <button onClick={register}  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Register</button>
                           </div>
                         </form>
                       </div>
