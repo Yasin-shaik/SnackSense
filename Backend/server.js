@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import authRoutes from "./Routes/authRoutes.js"
 const app = express();
 const port=5100;
 try{
@@ -15,3 +16,4 @@ app.get('/', (req,res) =>{
     res.send('Hello World');
 });
 
+app.use('/api/auth', authRoutes);

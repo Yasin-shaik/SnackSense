@@ -1,15 +1,27 @@
 import React, { useState } from 'react'
+import { redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import api from "../Api";
 import '../Assets/CSS/Login.css'
 export default function Login() {
   const[password,setPassword]=useState('');
   const[email,setEmail]=useState('');
-  const login=()=>{
+  const login=async()=>{
     if(!email || !password)
         console.log('Enter all the fields required');
-    else
-    {
-        console.log(email);
-        console.log(password);
+    const errors = { msg: '' };
+    if (password.length < 3) {
+      errors.msg = 'password too short';
+      return errors;
+    }
+    try {
+      const data={Email:email,Password:password};
+      await api.post("/api/auth/login", data);
+      toast.success('Login successful');
+      return redirect('/dashboard');
+    } catch (error) {
+      errors.msg = error.response.data.msg;
+      return errors;
     }
   }
   return (

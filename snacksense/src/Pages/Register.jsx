@@ -1,15 +1,26 @@
 import React, { useState } from 'react'
+import {redirect} from "react-router-dom";
+import axios from "../Api.js"
 import { ToastContainer, toast } from 'react-toastify';
 export default function Register() {
   const[name,setName]=useState('');
   const[password,setPassword]=useState('');
   const[email,setEmail]=useState('');
   const[repeat,setRepeat]=useState('');
-  const register=()=>{
+  const register=async()=>{
       if(!name || !email || !password || !repeat)
         toast.warning("Fill all the required fields");
       if(password!==repeat)
         toast.warning("Password & confirm password not matched");
+      const data={Name:name, Email:email, Password:password};
+      try {
+        await axios.post("/api/auth/register",data);
+        toast.success("Registration successful");
+        return redirect("/login");
+      } catch (error) {
+        toast.error(error?.response?.data?.msg);
+        return error;
+      }
   }
   return (
     <form method="post" className="form">
