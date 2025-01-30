@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { redirect } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer,toast } from 'react-toastify';
 import api from "../Api";
 import '../Assets/CSS/Login.css'
 export default function Login() {
+  const navigate = useNavigate();
   const[password,setPassword]=useState('');
   const[email,setEmail]=useState('');
   const login=async()=>{
@@ -15,17 +16,18 @@ export default function Login() {
       return errors;
     }
     try {
-      const data={Email:email,Password:password};
-      await api.post("/api/auth/login", data);
-      toast.success('Login successful');
-      return redirect('/dashboard');
+      await api.post("/auth/login", {email,password});
+      toast.success("Login successful");
+      setTimeout(()=>{
+        navigate("/home");
+      },2000);
     } catch (error) {
-      errors.msg = error.response.data.msg;
-      return errors;
+      toast.error(error.message);
     }
   }
   return (
     <section class="vh-100">
+      <ToastContainer position="top-center" theme="light" />
       <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-md-9 col-lg-6 col-xl-5">

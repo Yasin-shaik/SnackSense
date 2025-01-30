@@ -1,29 +1,46 @@
 import User from "../Models/User.js";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken";
 export const register = async (req, res) => {
-    const isFirstAccount = (await User.countDocuments()) === 0;
-    req.body.role = isFirstAccount ? 'admin' : 'user';
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    req.body.password = hashedPassword;
-  
-    const user = await User.create(req.body);
-    res.status(StatusCodes.CREATED).json({ msg: 'user created' });
+    const {name,email,password}=req.body;
+    try {
+      let user= await User.findOne({email});
+      if(user)
+        return res.status(400).json({msg: 'User already exists'});
+      user=new User({name,email,password});
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+      await user.save();
+      const payload = {
+        user: { id: user.id }
+      };
+      jwt.sign(payload, 'snacksense', { expiresIn: 3600 }, 
+        (err, token) => {
+            if (err) throw err;
+            res.json({ token });
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
 };
 
 export const login = async (req, res) => {
-  const user = await User.findOne({email: req.body.email});
-  const isValidUser = user && (await comparePassword(req.body.password, user.password));
-  if (!isValidUser) throw new UnauthenticatedError('invalid credentials');
-  console.log(user._id);
-  const token = createJWT({ userId: user._id, role: user.role });
-  const oneDay = 1000 * 60 * 60 * 24;
-  res.cookie('token', token, {
-    httpOnly: true,
-    expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === 'production',
-  });
-  
-  res.status(StatusCodes.CREATED).json({ msg: 'user logged in' });
+  const {email,password}=req.body;
+  try {
+    const user = await User.findOne({email: email});
+    const isValidUser = user && (await bcrypt.compare(password, user.password));
+    if (!isValidUser) 
+      return res.status(500).send('invalid credentials');
+    const token = jwt.sign({ userId: user._id }, 'snacksense');
+    const oneDay = 1000 * 60 * 60 * 24;
+    res.cookie('token', token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + oneDay),
+      secure: true,
+    });
+    res.status(200).json({ msg: 'User logged in', token });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 };

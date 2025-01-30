@@ -1,8 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import authRoutes from "./Routes/authRoutes.js"
+import cors from "cors";
 const app = express();
 const port=5100;
+app.use(cors());
+app.use(express.json());
 try{
     await mongoose.connect('mongodb://localhost:27017')
     app.listen(port, ()=>{
