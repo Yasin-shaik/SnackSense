@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer,toast } from 'react-toastify';
 import api from "../Api";
 import '../Assets/CSS/Login.css'
-export default function Login() {
+export default function Login(props) {
   const navigate = useNavigate();
   const[password,setPassword]=useState('');
   const[email,setEmail]=useState('');
@@ -16,7 +16,8 @@ export default function Login() {
       return errors;
     }
     try {
-      await api.post("/auth/login", {email,password});
+      const response=await api.post("/auth/login", {email,password});
+      props.onLogin(response.data.token);
       toast.success("Login successful");
       setTimeout(()=>{
         navigate("/home");
