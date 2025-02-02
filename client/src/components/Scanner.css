@@ -1,0 +1,77 @@
+/* Scanner.css */
+.scanner-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.scanner-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.scanner-input input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.scanner-input button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.scanner-input button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.product-details {
+  margin-top: 20px;
+}
+
+.product-details img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.product-details h3 {
+  margin: 10px 0;
+  font-size: 24px;
+}
+
+.product-details p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.product-details h4 {
+  margin: 15px 0 10px;
+  font-size: 20px;
+}
+
+.product-details ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.product-details ul li {
+  margin: 5px 0;
+  font-size: 16px;
+}
