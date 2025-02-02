@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import authRoutes from "./Routes/authRoutes.js"
+import openAIRoutes from './Routes/openAIRoutes.js';
 import cors from "cors";
 const app = express();
 const port=5100;
@@ -15,8 +16,7 @@ try{
     console.log(error);
     process.exit(1);
 }
-app.get('/', (req,res) =>{
-    res.send('Hello World');
-});
+
 
 app.use('/api/auth', authRoutes);
+app.use('/api/openAI',openAIRoutes);
