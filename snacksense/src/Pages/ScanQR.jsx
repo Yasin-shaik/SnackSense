@@ -26,41 +26,46 @@ export default function ScanQR() {
   }
   const handleScan = async () => {
     try {
-      setPrompt(`Assume You are a health and nutrition expert. Given the following product barcode, analyze and return the following six results:   
-### *Product barcode: ${barcode}*
+      const resp = await axios.get(`https://world.openfoodfacts.org/api/v3/product/${barcode}.json`)
+      setPrompt(`You are a health and nutrition expert. Given the following product details, analyze and return the following six results:  
 
+### *Product Details:* ${resp} 
 
+- *User Preferences & Health Metrics:*  
+  - Diet Type: {Vegan/Keto/Diabetic/etc.}  
+  - Health Concerns: {Diabetes/Hypertension/Weight Loss/etc.}  
+  - Allergies: {Peanuts, Gluten, Dairy, etc.}  
 
 ### *Required Analysis (Return the results in structured JSON format):*  
-*AI Health Score (0-100 scale)*:  
+ *AI Health Score (0-100 scale)*:  
    - Analyze the ingredients and nutrition data.  
    - Adjust the score based on harmful and beneficial factors.  
    - Consider user-specific health conditions (e.g., high sugar is bad for diabetics).  
    
-*Ingredient Classification:*  
+  *Ingredient Classification:*  
    - Categorize each ingredient as:  
      - 🟢 *Beneficial* (Good for health)  
      - 🟡 *Neutral* (No major impact)  
      - 🔴 *Harmful* (Linked to health risks)  
    - Provide a brief explanation for each classification.  
 
-*Allergen Alerts:*  
+ *Allergen Alerts:*  
    - Highlight any allergens present in the ingredients list.  
-   - Compare with user preferences and flag any risky ingredients.
+   - Compare with user preferences and flag any risky ingredients.  
 
-*Sustainability Insights:*  
+ *Sustainability Insights:*  
    - Rate environmental impact based on packaging & processing.  
    - Provide a *Sustainability Score (0-100)* where 100 = Most Eco-friendly.  
 
-*Personalized Recommendations:*  
+ *Personalized Recommendations:*  
    - Suggest healthier alternatives based on user preferences.  
    - Ensure similar taste but better nutritional value.  
 
-*Overall Star Rating (0-5 stars):*  
+ *Overall Star Rating (0-5 stars):*  
    - Combine all factors (Health Score, Ingredients, Allergens, Sustainability, Recommendations).  
-   - Normalize into a *5-star rating system* for easy user understanding. 
+   - Normalize into a *5-star rating system* for easy user understanding.  
 
-### *Output Format:* 
+### *Output Format (JSON Example):*  json
 {
   "AI_Health_Score": 42,
   "Ingredient_Classification": {
@@ -75,7 +80,7 @@ export default function ScanQR() {
   "Allergen_Alerts": ["No allergens detected"],
   "Sustainability_Score": 40,
   "Personalized_Recommendations": ["Baked Whole Wheat Chips", "Air-Popped Popcorn"],
-  "Overall_Star_Rating":3.5
+  "Overall_Star_Rating": 3.5
 }
 
 `);
