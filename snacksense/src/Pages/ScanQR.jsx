@@ -1,9 +1,12 @@
 import { React, useState } from "react";
+import '../Assets/CSS/Home.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../Api";
-export default function ScanQR() {
+import { useNavigate } from "react-router-dom";
+export default function ScanQR(props) {
   const [barcode, setBarcode] = useState("");
-  const [product, setProduct] = useState(null);
   const [prompt, setPrompt] = useState("");
+  const navigate= useNavigate();
   function extractAndParseJson(inputString) {
     try {
       // Find the starting position of '{'
@@ -86,23 +89,34 @@ export default function ScanQR() {
 `);
       const openAPI = await axios.post("/openAI/generate", { prompt });
       const jsonOpenAPI=extractAndParseJson(openAPI.data.message.response.candidates[0].content.parts[0].text);
-      setProduct(jsonOpenAPI);
+      props.setProduct(jsonOpenAPI);
+      navigate('/results');
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
-      setProduct(null);
+      props.setProduct(null);
     }
   };
   return (
-    <div>
-      <h2>Barcode Scanner</h2>
-      <input
-        type="text"
-        placeholder="Enter barcode"
-        value={barcode}
-        onChange={(e) => setBarcode(e.target.value)}
-      />
-      <button onClick={handleScan}>Scan</button>
-      {product && <p>{JSON.stringify(product, null, 2)}</p>}
+    <div className="bg-cover d-flex flex-column align-items-center justify-content-center mt-10">
+      <main className="container text-center py-1 overlay-content">
+        {/* Welcome Section */}
+        <section className="text-white mb-2 welcome-section">
+          <h1 className="display-4 fw-bold">Welcome! Let's make healthier snack choices!</h1>
+          <p className="lead">Your health insights, diet plans, and barcode scanner are just a tap away</p>
+          <div className="bg-white rounded mx-auto w-100 max-w-3xl h-48"></div>
+        </section>
+
+        {/* Scan Box - Centered */}
+        <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
+          <h2 className="h4 fw-bold">Ready to Scan Your Snack?</h2>
+          <p>Discover the health impact of any snack with just one scan!</p>
+          <div className="scan-button-container mt-3">
+            <input type="text" value={barcode} id="form3Example1c" className="form-control m-2" onChange={(e)=>{setBarcode(e.target.value)}}/>
+            <button className="btn btn-warning btn-lg fw-bold" onClick={handleScan}>Scan a Barcode</button>
+          </div>
+        </section>
+
+      </main>
     </div>
   );
 }
