@@ -30,7 +30,7 @@ export default function ScanQR(props) {
   const handleScan = async () => {
     try {
       const resp = await axios.get(`https://world.openfoodfacts.org/api/v3/product/${barcode}.json`)
-      setPrompt(`You are a health and nutrition expert. Given the following product details, analyze and return the following six results:  
+      setPrompt(`You are a health and nutrition expert. Given the following product details, analyze and must return the results exactly as the output format:  
 
 ### *Product Details:* ${resp} 
 
@@ -70,21 +70,50 @@ export default function ScanQR(props) {
 
 ### *Output Format (JSON Example):*  json
 {
-  "AI_Health_Score": 42,
-  "Ingredient_Classification": {
-    "Rice Meal": "Neutral",
-    "Edible Vegetable Oil": "Neutral",
-    "Corn Meal": "Neutral",
-    "Gram Meal": "Neutral",
-    "Spices and Condiments": "Beneficial",
-    "Citric Acid": "Harmful",
-    "Tartaric Acid": "Harmful"
+  AI_Health_Score: 70,
+  Ingredient_Classification: {
+    Oats: {
+      Classification: "🟢 Beneficial",
+      Explanation: "Good source of fiber, which aids digestion and can help regulate blood sugar levels.",
+    },
+    "Wheat Flour": {
+      Classification: "🟡 Neutral",
+      Explanation: "Provides carbohydrates for energy but can be high in refined carbohydrates, depending on the type of wheat flour used. Whole wheat flour would be more beneficial.",
+    },
+    "Brown Sugar": {
+      Classification: "🟡 Neutral",
+      Explanation: "Provides sweetness but is a refined sugar; moderation is key. Consider alternatives like maple syrup or stevia.",
+    },
+    "Vegetable Oil": {
+      Classification: "🟡 Neutral",
+      Explanation: "Provides fat, but the type of oil significantly impacts health. Unsaturated fats are healthier than saturated or trans fats. Specification needed.",
+    },
+    "Baking Soda": {
+      Classification: "🟡 Neutral",
+      Explanation: "Baking agent; generally safe in small amounts.",
+    },
+    Salt: {
+      Classification: "🟡 Neutral",
+      Explanation: "Essential in small amounts, but excessive consumption can be harmful. Moderation is key.",
+    },
+    Cinnamon: {
+      Classification: "🟢 Beneficial",
+      Explanation: "Rich in antioxidants, may help regulate blood sugar levels.",
+    },
   },
-  "Allergen_Alerts": ["No allergens detected"],
-  "Sustainability_Score": 40,
-  "Personalized_Recommendations": ["Baked Whole Wheat Chips", "Air-Popped Popcorn"],
-  "Overall_Star_Rating": 3.5
-}
+  Sustainability_Score: 65,
+  Personalized_Recommendations: [
+    {
+      Recommendation: "Oatmeal with berries and nuts",
+      Reason: "Provides fiber, antioxidants, and healthy fats, replacing refined carbohydrates and added sugar.",
+    },
+    {
+      Recommendation: "Whole wheat crackers with avocado",
+      Reason: "Replaces refined grains with whole grains, adds healthy fats and fiber.",
+    },
+  ],
+  Overall_Star_Rating: 4,
+};
 
 `);
       const openAPI = await axios.post("/openAI/generate", { prompt });
