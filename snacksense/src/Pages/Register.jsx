@@ -7,6 +7,7 @@ export default function Register() {
   const[password,setPassword]=useState('');
   const[email,setEmail]=useState('');
   const[repeat,setRepeat]=useState('');
+  const[role,setRole]=useState('User');
   const navigate = useNavigate();
   const register=async()=>{
       if(!name || !email || !password || !repeat)
@@ -16,7 +17,10 @@ export default function Register() {
       if(password.length<8)
         toast.warning("Password shoulde be more than 8 characters");
       try {
-        await axios.post("/auth/register",{name,email,password});
+        if(role==='User')
+          await axios.post("/auth/registerUser",{name,email,password});
+        else
+          await axios.post("/auth/registerNutri",{name,email,password});
         toast.success("Registration successful");
         setTimeout(()=>{
           navigate("/login");
@@ -39,6 +43,21 @@ export default function Register() {
                       <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                         <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
                         <form className="mx-1 mx-md-4">
+                        <div className="align-items-center mb-3 ml-3">
+                        <label className="mb-2" style={{marginLeft:"20px"}}>
+                            Signup as:
+                            <select
+                              name="role"
+                              value={role}
+                              onChange={(e)=>{setRole(e.target.value)}}
+                              className="w-full p-2 border rounded mt-1"
+                              style={{marginLeft:"10px"}}
+                            >
+                              <option value="User">User</option>
+                              <option value="Nutritionist">Nutritionist</option>
+                            </select>
+                          </label>
+                          </div>
                           <div className="d-flex flex-row align-items-center mb-4">
                             <i className="fas fa-user fa-lg me-3 fa-fw"></i>
                             <div data-mdb-input-init className="form-outline flex-fill mb-0">
