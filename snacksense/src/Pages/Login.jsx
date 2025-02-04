@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import api from "../Api";
+import api from "../Api.js";
 import "../Assets/CSS/Login.css";
-export default function Login(props) {
+export default function Login() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("User");

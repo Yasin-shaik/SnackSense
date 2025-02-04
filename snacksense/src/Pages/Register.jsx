@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "../Api.js"
 import { ToastContainer, toast } from 'react-toastify';
-export default function Register() {
+export default function Register(props) {
   const[name,setName]=useState('');
   const[password,setPassword]=useState('');
   const[email,setEmail]=useState('');
@@ -18,12 +18,15 @@ export default function Register() {
         toast.warning("Password shoulde be more than 8 characters");
       try {
         if(role==='User')
+        {
+          props.setUser(email);
           await axios.post("/auth/registerUser",{name,email,password});
+        }
         else
           await axios.post("/auth/registerNutri",{name,email,password});
         toast.success("Registration successful");
         setTimeout(()=>{
-          navigate("/login");
+          navigate("/details");
         },2000);
       } catch (error) {
         toast.error(error?.response?.data?.msg);
