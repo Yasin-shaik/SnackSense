@@ -3,6 +3,7 @@ import '../Assets/CSS/Home.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../Api";
 import { useNavigate } from "react-router-dom";
+
 export default function ScanQR(props) {
   const [barcode, setBarcode] = useState("");
   const [prompt, setPrompt] = useState("");

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../Api.js";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-//import "../Assets/CSS/Details.css";
+import { Container, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Paper, Stack } from "@mui/material";
 
 const Details = (props) => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     age: "",
     gender: "",
@@ -34,171 +33,83 @@ const Details = (props) => {
   };
 
   const handleDetails = async () => {
-    const email=props.user;
-    if(!email)
-        return console.log('Email not here');
+    const email = props.user;
+    if (!email) return console.log("Email not here");
     await axios.post("/user/userDetails", { userData, email });
     toast.success("You are now ready to scan");
     setTimeout(() => {
-      navigate('/home');
+      navigate("/home");
     }, 2000);
   };
 
   return (
-    <div className="container mt-4">
+    <Container maxWidth="sm">
       <ToastContainer position="top-center" theme="light" />
-      <h2 className="mb-4 text-center">User Profile</h2>
-      <div>
-        {/* Basic Health Profile */}
-        <div className="mb-3">
-          <label className="form-label">Age</label>
-          <input
-            type="number"
-            className="form-control"
-            name="age"
-            value={userData.age}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Gender</label>
-          <select
-            className="form-control"
-            name="gender"
-            value={userData.gender}
-            onChange={handleChange}
-          >
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Weight (kg)</label>
-          <input
-            type="number"
-            className="form-control"
-            name="weight"
-            value={userData.weight}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Height (cm)</label>
-          <input
-            type="number"
-            className="form-control"
-            name="height"
-            value={userData.height}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* Dietary Preferences & Restrictions */}
-        <div className="mb-3">
-          <label className="form-label">Diet Type</label>
-          {[
-            "Vegetarian",
-            "Vegan",
-            "Keto",
-            "Low-Carb",
-            "High-Protein",
-            "Mediterranean",
-            "Paleo",
-            "Gluten-Free",
-            "Dairy-Free",
-          ].map((diet) => (
-            <div key={diet} className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                name="dietType"
-                value={diet}
-                onChange={handleCheckboxChange}
-              />
-              <label className="form-check-label">{diet}</label>
-            </div>
-          ))}
-        </div>
-
-        {/* Allergies */}
-        <div className="mb-3">
-          <label className="form-label">Allergies</label>
-          {[
-            "Gluten",
-            "Lactose/Dairy",
-            "Nuts (Peanuts, Almonds, etc.)",
-            "Soy",
-            "Eggs",
-            "Seafood (Fish/Shellfish)",
-            "Artificial Preservatives & Additives",
-          ].map((allergy) => (
-            <div key={allergy} className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                name="allergies"
-                value={allergy}
-                onChange={handleCheckboxChange}
-              />
-              <label className="form-check-label">{allergy}</label>
-            </div>
-          ))}
-        </div>
-
-        {/* Fitness & Lifestyle */}
-        <div className="mb-3">
-          <label className="form-label">Activity Level</label>
-          <select
-            className="form-control"
-            name="activityLevel"
-            value={userData.activityLevel}
-            onChange={handleChange}
-          >
-            <option value="">Select</option>
-            <option value="Sedentary">Sedentary</option>
-            <option value="Light Activity">Light Activity</option>
-            <option value="Moderate">Moderate</option>
-            <option value="Active">Active</option>
-            <option value="Very Active">Very Active</option>
-          </select>
-        </div>
-
-        {/* Optional Tracking */}
-        <div className="mb-3">
-          <label className="form-label">Daily Water Intake (ml)</label>
-          <input
-            type="number"
-            className="form-control"
-            name="waterIntake"
-            value={userData.waterIntake}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Daily Sleep Hours</label>
-          <input
-            type="number"
-            className="form-control"
-            name="sleepHours"
-            value={userData.sleepHours}
-            onChange={handleChange}
-          />
-        </div>
-
-        <button
-          type="submit"
-          onClick={handleDetails}
-          className="btn btn-success"
-        >
-          Save Profile
-        </button>
-      </div>
-    </div>
+      <Paper elevation={3} sx={{ p: 4, mt: 5, borderRadius: 3 }}>
+        <Typography variant="h4" align="center" color="primary" fontWeight="bold" gutterBottom>
+          User Profile
+        </Typography>
+        <Stack spacing={2}>
+          <TextField label="Age" type="number" name="age" fullWidth value={userData.age} onChange={handleChange} />
+          <FormControl fullWidth>
+            <InputLabel>Gender</InputLabel>
+            <Select name="gender" value={userData.gender} onChange={handleChange}>
+              <MenuItem value="">Select</MenuItem>
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField label="Weight (kg)" type="number" name="weight" fullWidth value={userData.weight} onChange={handleChange} />
+          <TextField label="Height (cm)" type="number" name="height" fullWidth value={userData.height} onChange={handleChange} />
+          <Box>
+            <Typography variant="h6">Diet Type</Typography>
+            {[
+              "Vegetarian",
+              "Vegan",
+              "Keto",
+              "Low-Carb",
+              "High-Protein",
+              "Mediterranean",
+              "Paleo",
+              "Gluten-Free",
+              "Dairy-Free",
+            ].map((diet) => (
+              <FormControlLabel key={diet} control={<Checkbox name="dietType" value={diet} onChange={handleCheckboxChange} />} label={diet} />
+            ))}
+          </Box>
+          <Box>
+            <Typography variant="h6">Allergies</Typography>
+            {[
+              "Gluten",
+              "Lactose/Dairy",
+              "Nuts",
+              "Soy",
+              "Eggs",
+              "Seafood",
+              "Artificial Preservatives & Additives",
+            ].map((allergy) => (
+              <FormControlLabel key={allergy} control={<Checkbox name="allergies" value={allergy} onChange={handleCheckboxChange} />} label={allergy} />
+            ))}
+          </Box>
+          <FormControl fullWidth>
+            <InputLabel>Activity Level</InputLabel>
+            <Select name="activityLevel" value={userData.activityLevel} onChange={handleChange}>
+              <MenuItem value="">Select</MenuItem>
+              <MenuItem value="Sedentary">Sedentary</MenuItem>
+              <MenuItem value="Light Activity">Light Activity</MenuItem>
+              <MenuItem value="Moderate">Moderate</MenuItem>
+              <MenuItem value="Active">Active</MenuItem>
+              <MenuItem value="Very Active">Very Active</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField label="Daily Water Intake (ml)" type="number" name="waterIntake" fullWidth value={userData.waterIntake} onChange={handleChange} />
+          <TextField label="Daily Sleep Hours" type="number" name="sleepHours" fullWidth value={userData.sleepHours} onChange={handleChange} />
+          <Button variant="contained" color="success" fullWidth onClick={handleDetails}>
+            Save Profile
+          </Button>
+        </Stack>
+      </Paper>
+    </Container>
   );
 };
 

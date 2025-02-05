@@ -5,12 +5,12 @@ const testimonials = [
   {
     id: 1,
     text: "Finally, an app that helps me eat better! Love the AI health score.",
-    author: "Rahul, Fitness Enthusiast",
+    author: "Ajay, Fitness Enthusiast",
   },
   {
     id: 2,
     text: "Great app! It makes tracking my meals effortless.",
-    author: "Aisha, Nutritionist",
+    author: ", Nutritionist",
   },
   {
     id: 3,
