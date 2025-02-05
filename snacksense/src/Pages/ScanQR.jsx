@@ -1,31 +1,30 @@
 import { React, useState } from "react";
-import '../Assets/CSS/Home.css';
+import "../Assets/CSS/Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../Api";
 import { useNavigate } from "react-router-dom";
-import Barcode from "../Components/Scanner";
-
+import Barcode from "react-qr-barcode-scanner";
 
 export default function ScanQR(props) {
-  const [scanResult, setScanResult] = useState(null);
   const [scanning, setScanning] = useState(false);
   const [barcode, setBarcode] = useState("");
   const [prompt, setPrompt] = useState("");
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   function extractAndParseJson(inputString) {
     try {
       // Find the starting position of '{'
-      const startIndex = inputString.indexOf('{');
+      const startIndex = inputString.indexOf("{");
       if (startIndex === -1) {
         return { error: "No JSON object found in the input" };
       }
-  
+
       // Find the ending position of ```
       const endIndex = inputString.indexOf("```", startIndex);
-      const jsonString = endIndex !== -1 
-        ? inputString.substring(startIndex, endIndex)  // Extract until ```
-        : inputString.substring(startIndex);           // If no ```, take the rest
-  
+      const jsonString =
+        endIndex !== -1
+          ? inputString.substring(startIndex, endIndex) // Extract until ```
+          : inputString.substring(startIndex); // If no ```, take the rest
+
       // Parse JSON
       return JSON.parse(jsonString);
     } catch (error) {
@@ -34,8 +33,10 @@ export default function ScanQR(props) {
   }
   const handleScan = async () => {
     try {
-      const resp = await axios.get(`https://world.openfoodfacts.org/api/v3/product/${barcode}.json`)
-      setPrompt(`You are a health and nutrition expert. Given the following product details, analyze and must return the results exactly as the output format:  
+      const resp = await axios.get(
+        `https://world.openfoodfacts.org/api/v3/product/${barcode}.json`
+      );
+      setPrompt(`You are a health and nutrition expert. Given the following product details, analyze with proper formulas and must return the results exactly as the output format:  
 
 ### *Product Details:* ${resp} 
 
@@ -122,9 +123,11 @@ export default function ScanQR(props) {
 
 `);
       const openAPI = await axios.post("/openAI/generate", { prompt });
-      const jsonOpenAPI=extractAndParseJson(openAPI.data.message.response.candidates[0].content.parts[0].text);
+      const jsonOpenAPI = extractAndParseJson(
+        openAPI.data.message.response.candidates[0].content.parts[0].text
+      );
       props.setProduct(jsonOpenAPI);
-      navigate('/results');
+      navigate("/results");
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
       props.setProduct(null);
@@ -135,16 +138,59 @@ export default function ScanQR(props) {
       <main className="container text-center py-1 overlay-content">
         {/* Welcome Section */}
         <section className="text-white mb-2 welcome-section">
-          <h1 className="display-4 fw-bold">Welcome! Let's make healthier snack choices!</h1>
-          <p className="lead">Your health insights, diet plans, and barcode scanner are just a tap away</p>
+          <h1 className="display-4 fw-bold">
+            Welcome! Let's make healthier snack choices!
+          </h1>
+          <p className="lead">
+            Your health insights, diet plans, and barcode scanner are just a tap
+            away
+          </p>
           <div className="bg-white rounded mx-auto w-100 max-w-3xl h-48"></div>
         </section>
-
-        {/* Scan Box - Centered */}
         <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
+          <h2 className="h4 fw-bold">Scan Your Snack</h2>
+          <p>Scan the barcode of a product to get health insights!</p>
+
+          {/* Barcode Scanner */}
+          {scanning && (
+            <Barcode
+              width={300}
+              height={250}
+              onUpdate={(err, result) => {
+                if (result) {
+                  setBarcode(result.text);
+                  setScanning(false);
+                }
+              }}
+            />
+          )}
+
+          <div className="scan-button-container mt-3">
+            <button
+              className="btn btn-primary btn-lg"
+              onClick={() => setScanning(true)}
+            >
+              Start Scanning
+            </button>
+            <input
+              type="text"
+              value={barcode}
+              className="form-control mt-2"
+              readOnly
+            />
+            <button
+              className="btn btn-warning btn-lg mt-2"
+              onClick={handleScan}
+            >
+              Analyze Product
+            </button>
+          </div>
+        </section>
+        {/* Scan Box - Centered */}
+        {/* <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
           <h2 className="h4 fw-bold">Ready to Scan Your Snack?</h2>
           <p>Discover the health impact of any snack with just one scan!</p>
-          
+
           <div className="scan-button-container mt-3">
             <button
               className="btn btn-warning btn-lg fw-bold"
@@ -152,39 +198,38 @@ export default function ScanQR(props) {
             >
               {scanning ? "Close Scanner" : "Scan a Barcode"}
             </button>
-          </div>
+          </div> */}
 
-          {/* Barcode Scanner */}
-          {scanning && (
-            <div className="mt-3 p-2 border rounded">
-              <Barcode
-                width={300}
-                height={200}
-                onUpdate={(err, result) => {
-                  if (result) {
-                    setScanResult(result.text);
-                    setScanning(false); // Close scanner after scanning
-                  }
-                }}
-              />
-            </div>
-          )}
+        {/* Barcode Scanner */}
+        {/* <Barcode onScan={(data) => setScanning(data)} />
+          {scanning && <h3>Scanned Barcode: {scanning}</h3>} */}
 
-          {/* Display Scanned Result */}
-          {scanResult && <p className="mt-3 fw-bold">Scanned: {scanResult}</p>}
-        </section>
-
+        {/* Display Scanned Result */}
+        {/* {scanResult && <p className="mt-3 fw-bold">Scanned: {scanResult}</p>} */}
+        {/* </section> */}
 
         {/* Scan Box - Centered */}
-        <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
+        {/* <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
           <h2 className="h4 fw-bold">Ready to Scan Your Snack?</h2>
           <p>Discover the health impact of any snack with just one scan!</p>
           <div className="scan-button-container mt-3">
-            <input type="text" value={barcode} id="form3Example1c" className="form-control m-2" onChange={(e)=>{setBarcode(e.target.value)}}/>
-            <button className="btn btn-warning btn-lg fw-bold" onClick={handleScan}>Scan a Barcode</button>
+            <input
+              type="text"
+              value={barcode}
+              id="form3Example1c"
+              className="form-control m-2"
+              onChange={(e) => {
+                setBarcode(e.target.value);
+              }}
+            />
+            <button
+              className="btn btn-warning btn-lg fw-bold"
+              onClick={handleScan}
+            >
+              Scan a Barcode
+            </button>
           </div>
-        </section>
-
+        </section> */}
       </main>
     </div>
   );
