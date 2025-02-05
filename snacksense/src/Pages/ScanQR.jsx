@@ -3,8 +3,12 @@ import '../Assets/CSS/Home.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../Api";
 import { useNavigate } from "react-router-dom";
+import Barcode from "../Components/Scanner";
+
 
 export default function ScanQR(props) {
+  const [scanResult, setScanResult] = useState(null);
+  const [scanning, setScanning] = useState(false);
   const [barcode, setBarcode] = useState("");
   const [prompt, setPrompt] = useState("");
   const navigate= useNavigate();
@@ -135,6 +139,41 @@ export default function ScanQR(props) {
           <p className="lead">Your health insights, diet plans, and barcode scanner are just a tap away</p>
           <div className="bg-white rounded mx-auto w-100 max-w-3xl h-48"></div>
         </section>
+
+        {/* Scan Box - Centered */}
+        <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
+          <h2 className="h4 fw-bold">Ready to Scan Your Snack?</h2>
+          <p>Discover the health impact of any snack with just one scan!</p>
+          
+          <div className="scan-button-container mt-3">
+            <button
+              className="btn btn-warning btn-lg fw-bold"
+              onClick={() => setScanning(!scanning)}
+            >
+              {scanning ? "Close Scanner" : "Scan a Barcode"}
+            </button>
+          </div>
+
+          {/* Barcode Scanner */}
+          {scanning && (
+            <div className="mt-3 p-2 border rounded">
+              <Barcode
+                width={300}
+                height={200}
+                onUpdate={(err, result) => {
+                  if (result) {
+                    setScanResult(result.text);
+                    setScanning(false); // Close scanner after scanning
+                  }
+                }}
+              />
+            </div>
+          )}
+
+          {/* Display Scanned Result */}
+          {scanResult && <p className="mt-3 fw-bold">Scanned: {scanResult}</p>}
+        </section>
+
 
         {/* Scan Box - Centered */}
         <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">

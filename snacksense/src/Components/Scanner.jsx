@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
+import { toast, ToastContainer } from "react-toastify";
 
 const BarcodeScanner = () => {
   const [scanResult, setScanResult] = useState(null);
@@ -7,6 +8,7 @@ const BarcodeScanner = () => {
 
   return (
     <div className="flex flex-col items-center gap-4 p-4">
+              <ToastContainer position="top-center" theme="light" />
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-lg"
         onClick={() => setScanning(!scanning)}
@@ -23,6 +25,8 @@ const BarcodeScanner = () => {
               if (result) {
                 setScanResult(result.text);
                 setScanning(false); 
+                console.log(result.text);
+                toast.success("Barcode scanned successfully");
               }
             }}
           />

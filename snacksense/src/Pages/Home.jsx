@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React from "react";  
 import "bootstrap/dist/css/bootstrap.min.css";
-import BarcodeScannerComponent from "../Components/Scanner";
 
 export default function SnackSense() {
-  const [scanResult, setScanResult] = useState(null);
-  const [scanning, setScanning] = useState(false);
 
   return (
     <div className="bg-cover d-flex flex-column align-items-center justify-content-center mt-50">
@@ -21,7 +18,7 @@ export default function SnackSense() {
         </section>
 
         {/* Scan Box - Centered */}
-        <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
+        {/* <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
           <h2 className="h4 fw-bold">Ready to Scan Your Snack?</h2>
           <p>Discover the health impact of any snack with just one scan!</p>
           
@@ -32,10 +29,10 @@ export default function SnackSense() {
             >
               {scanning ? "Close Scanner" : "Scan a Barcode"}
             </button>
-          </div>
+          </div> */}
 
           {/* Barcode Scanner */}
-          {scanning && (
+          {/* {scanning && (
             <div className="mt-3 p-2 border rounded">
               <BarcodeScannerComponent
                 width={300}
@@ -48,11 +45,11 @@ export default function SnackSense() {
                 }}
               />
             </div>
-          )}
+          )} */}
 
           {/* Display Scanned Result */}
-          {scanResult && <p className="mt-3 fw-bold">Scanned: {scanResult}</p>}
-        </section>
+          {/* {scanResult && <p className="mt-3 fw-bold">Scanned: {scanResult}</p>}
+        </section> */}
 
         {/* Call to Action Section */}
         <section className="text-center mt-5 cta-section text-white py-4 rounded">
