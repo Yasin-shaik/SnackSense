@@ -15,7 +15,7 @@ import {
 import InfoIcon from "@mui/icons-material/Info";
 import EmailIcon from "@mui/icons-material/Email";
 import { keyframes } from "@emotion/react";
-
+import logo from "../Assets/Images/logo.png"
 // Animation for fade-in effect
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -23,12 +23,12 @@ const fadeIn = keyframes`
 `;
 
 const nutritionists = [
-  { name: "Dr. Sarah Johnson", specialization: "Sports Nutrition", experience: "10 years", email: "sarah@example.com", image: "https://via.placeholder.com/150", details: "Dr. Sarah is an expert in sports nutrition, helping athletes achieve peak performance through proper diet and supplements." },
-  { name: "Dr. Mark Smith", specialization: "Clinical Nutrition", experience: "8 years", email: "mark@example.com", image: "https://via.placeholder.com/150", details: "Dr. Mark specializes in clinical nutrition, focusing on personalized meal plans for patients with medical conditions." },
-  { name: "Dr. Emily Davis", specialization: "Weight Management", experience: "12 years", email: "emily@example.com", image: "https://via.placeholder.com/150", details: "Dr. Emily helps clients achieve their weight goals with sustainable diet and exercise plans." },
-  { name: "Dr. Laura Thompson", specialization: "Dietary Consultation", experience: "9 years", email: "laura@example.com", image: "https://via.placeholder.com/150", details: "Dr. Laura focuses on dietary consultation to create balanced nutrition plans based on individual health goals." },
-  { name: "Dr. James Brown", specialization: "Pediatric Nutrition", experience: "7 years", email: "james@example.com", image: "https://via.placeholder.com/150", details: "Dr. James specializes in pediatric nutrition, offering dietary plans for children with health conditions." },
-  { name: "Dr. Olivia Williams", specialization: "Vegan Nutrition", experience: "6 years", email: "olivia@example.com", image: "https://via.placeholder.com/150", details: "Dr. Olivia is an expert in vegan nutrition, helping individuals transition to plant-based diets while maintaining nutritional balance." },
+  { name: "Dr. Sarah Johnson", specialization: "Sports Nutrition", experience: "10 years", email: "sarah@example.com", image: `${logo}`, details: "Dr. Sarah is an expert in sports nutrition, helping athletes achieve peak performance through proper diet and supplements." },
+  { name: "Dr. Mark Smith", specialization: "Clinical Nutrition", experience: "8 years", email: "mark@example.com", image: `${logo}`, details: "Dr. Mark specializes in clinical nutrition, focusing on personalized meal plans for patients with medical conditions." },
+  { name: "Dr. Emily Davis", specialization: "Weight Management", experience: "12 years", email: "emily@example.com", image: `${logo}`, details: "Dr. Emily helps clients achieve their weight goals with sustainable diet and exercise plans." },
+  { name: "Dr. Laura Thompson", specialization: "Dietary Consultation", experience: "9 years", email: "laura@example.com", image: `${logo}`, details: "Dr. Laura focuses on dietary consultation to create balanced nutrition plans based on individual health goals." },
+  { name: "Dr. James Brown", specialization: "Pediatric Nutrition", experience: "7 years", email: "james@example.com", image: `${logo}`, details: "Dr. James specializes in pediatric nutrition, offering dietary plans for children with health conditions." },
+  { name: "Dr. Olivia Williams", specialization: "Vegan Nutrition", experience: "6 years", email: "olivia@example.com", image: `${logo}`, details: "Dr. Olivia is an expert in vegan nutrition, helping individuals transition to plant-based diets while maintaining nutritional balance." },
 ];
 
 function NutritionistsList() {
