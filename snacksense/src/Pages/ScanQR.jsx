@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../Api";
 import { useNavigate } from "react-router-dom";
 import Barcode from "react-qr-barcode-scanner";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function ScanQR(props) {
   const [scanning, setScanning] = useState(false);
@@ -33,6 +34,8 @@ export default function ScanQR(props) {
   }
   const handleScan = async () => {
     try {
+      toast.dismiss();
+      toast('Processing user details and product details....');
       const resp = await axios.get(
         `https://world.openfoodfacts.org/api/v3/product/${barcode}.json`
       );
@@ -135,6 +138,7 @@ export default function ScanQR(props) {
   };
   return (
     <div className="bg-cover d-flex flex-column align-items-center justify-content-center mt-10">
+      <ToastContainer position="top-center" theme="light" />
       <main className="container text-center py-1 overlay-content">
         {/* Welcome Section */}
         <section className="text-white mb-2 welcome-section">
@@ -186,50 +190,7 @@ export default function ScanQR(props) {
             </button>
           </div>
         </section>
-        {/* Scan Box - Centered */}
-        {/* <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
-          <h2 className="h4 fw-bold">Ready to Scan Your Snack?</h2>
-          <p>Discover the health impact of any snack with just one scan!</p>
-
-          <div className="scan-button-container mt-3">
-            <button
-              className="btn btn-warning btn-lg fw-bold"
-              onClick={() => setScanning(!scanning)}
-            >
-              {scanning ? "Close Scanner" : "Scan a Barcode"}
-            </button>
-          </div> */}
-
-        {/* Barcode Scanner */}
-        {/* <Barcode onScan={(data) => setScanning(data)} />
-          {scanning && <h3>Scanned Barcode: {scanning}</h3>} */}
-
-        {/* Display Scanned Result */}
-        {/* {scanResult && <p className="mt-3 fw-bold">Scanned: {scanResult}</p>} */}
-        {/* </section> */}
-
-        {/* Scan Box - Centered */}
-        {/* <section className="scan-box mx-auto p-4 border rounded shadow-lg d-flex flex-column align-items-center">
-          <h2 className="h4 fw-bold">Ready to Scan Your Snack?</h2>
-          <p>Discover the health impact of any snack with just one scan!</p>
-          <div className="scan-button-container mt-3">
-            <input
-              type="text"
-              value={barcode}
-              id="form3Example1c"
-              className="form-control m-2"
-              onChange={(e) => {
-                setBarcode(e.target.value);
-              }}
-            />
-            <button
-              className="btn btn-warning btn-lg fw-bold"
-              onClick={handleScan}
-            >
-              Scan a Barcode
-            </button>
-          </div>
-        </section> */}
+        
       </main>
     </div>
   );

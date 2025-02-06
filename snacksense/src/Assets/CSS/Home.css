@@ -11,9 +11,39 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed; /* Keeps the background constant on scroll */
-  height: 100vh; /* Full viewport height */
+  height: 100%; /* Full viewport height */
   position: relative;
 }
+
+/* Background with blur effect */
+.scan-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blur-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Centered Scan Box */
+.scan-box {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 15px;
+  max-width: 400px;
+}
+
 
 .overlay-content {
   position: relative;

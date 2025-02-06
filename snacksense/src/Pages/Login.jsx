@@ -1,114 +1,109 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import logi from "../Assets/Images/logi.jpg";
 import api from "../Api.js";
-import "../Assets/CSS/Login.css";
 
-export default function Login() {
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  MenuItem,
+  Select,
+  FormControl,
+  Link,
+} from "@mui/material";
+
+export default function Login(props) {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("User");
   const [email, setEmail] = useState("");
+
   const login = async () => {
-    if (!email || !password) console.log("Enter all the fields required");
-    const errors = { msg: "" };
+    if (!email || !password) {
+      toast.warning("Enter all the fields required");
+      return;
+    }
     if (password.length < 3) {
-      errors.msg = "password too short";
-      return errors;
+      toast.error("Password too short");
+      return;
     }
     try {
-      if(role==='User')
+      if (role === "User") {
         await api.post("/auth/loginUser", { email, password });
-      else
+      } else {
         await api.post("/auth/loginNutri", { email, password });
+      }
       toast.success("Login successful");
+      props.setLogin(true);
       setTimeout(() => {
         navigate("/home");
       }, 2000);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error?.response?.data?.msg || "Login failed");
     }
   };
-  return (
-    <section className="vh-100">
-      <ToastContainer position="top-center" theme="light" />
-      <div className="container-fluid h-custom">
-        <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-md-9 col-lg-6 col-xl-5">
-            <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-              className="img-fluid"
-              alt="Sample"
-            />
-          </div>
-          <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <h1 className="text-center mb-4">Login</h1>
-            <form>
-              <div className="align-items-center mb-3 ml-3">
-                <label className="mb-2" style={{ marginLeft: "10px" }}>
-                  Signup as:
-                  <select
-                    name="role"
-                    value={role}
-                    onChange={(e) => {
-                      setRole(e.target.value);
-                    }}
-                    className="w-full p-2 border rounded mt-1"
-                    style={{ marginLeft: "10px" }}
-                  >
-                    <option value="User">User</option>
-                    <option value="Nutritionist">Nutritionist</option>
-                  </select>
-                </label>
-              </div>
-              <div className="form-outline mb-4">
-                <input
-                  type="email"
-                  id="form3Example3"
-                  className="form-control form-control-lg"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
-                <label className="form-label" htmlFor="form3Example3">
-                  Email address
-                </label>
-              </div>
-              <div className="form-outline mb-3">
-                <input
-                  type="password"
-                  id="form3Example4"
-                  className="form-control form-control-lg"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                />
-                <label className="form-label" htmlFor="form3Example4">
-                  Password
-                </label>
-              </div>
 
-              <div className="d-flex justify-content-between align-items-center">
-                <a href="#!" className="text-body">
-                  Forgot password?
-                </a>
-                <div className="text-center text-lg-start mt-4 pt-2">
-                  <button
-                    onClick={login}
-                    type="button"
-                    className="btn btn-primary btn-lg"
-                    style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
-                  >
-                    Login
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
+  return (
+    <Box
+      sx={{
+        backgroundImage: `url(${logi})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Container maxWidth="xs">
+        <ToastContainer position="top-center" theme="light" />
+        <Box
+          sx={{
+            p: 4,
+            boxShadow: 3,
+            borderRadius: 2,
+            backdropFilter: "blur(10px)",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            width: "100%",
+          }}
+        >
+          <Typography variant="h4" textAlign="center" mb={3} fontWeight="bold" color="#313c03">
+            Login
+          </Typography>
+          <FormControl fullWidth margin="normal">
+            <fieldset sx={{ color: "#313c03" }}>Login as</fieldset>
+            <Select value={role} onChange={(e) => setRole(e.target.value)} sx={{ color: "#313c03" }}>
+              <MenuItem value="User">User</MenuItem>
+              <MenuItem value="Nutritionist">Nutritionist</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField fullWidth label="Email" value={email} margin="normal" onChange={(e) => setEmail(e.target.value)} />
+          <TextField fullWidth label="Password" type="password" value={password} margin="normal" onChange={(e) => setPassword(e.target.value)} />
+          <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
+            <Link
+              onClick={() => navigate("/forgot-password")}
+              sx={{ cursor: "pointer", fontWeight: "bold", color: "#1565c0" }}
+            >
+              Forgot Password?
+            </Link>
+          </Box>
+          <Button fullWidth variant="contained" sx={{ mt: 3, fontWeight: "bold", backgroundColor: "#313c03", color: "white" }} onClick={login}>
+            Login
+          </Button>
+          <Box textAlign="center" mt={2}>
+            <Typography variant="body2" color="#313c03">
+              Don't have an account?{" "}
+              <Link onClick={() => navigate("/register")} sx={{ cursor: "pointer", fontWeight: "bold", color: "#1565c0" }}>
+                Register
+              </Link>
+            </Typography>
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   );
 }

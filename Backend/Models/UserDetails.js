@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
     enum: [
       "Gluten",
       "Lactose/Dairy",
-      "Nuts (Peanuts, Almonds, etc.)",
+      "Nuts",
       "Soy",
       "Eggs",
       "Seafood (Fish/Shellfish)",

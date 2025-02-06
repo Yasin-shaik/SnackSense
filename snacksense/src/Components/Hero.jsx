@@ -157,7 +157,7 @@ export default function Hero() {
       >
         <Button
           component={Link}
-          to="/signup"
+          to="/register"
           sx={{
             background: "#a36818",
             color: "white",
